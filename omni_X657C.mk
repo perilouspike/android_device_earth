@@ -15,36 +15,25 @@
 # limitations under the License.
 
 # Device Target Name
-PRODUCT_RELEASE_NAME := X657C
+PRODUCT_RELEASE_NAME := earth
 
 # Inherit from the Device Tree itself.
-$(call inherit-product, device/infinix/X657C/device.mk)
+$(call inherit-product, device/xiaomi/earth/device.mk)
 
 # Inherit from TWRP-common stuffs, if building TWRP.
 $(call inherit-product-if-exists, vendor/twrp/config/common.mk)
 
-# Inherit from PBRP-common stuff, if building PBRP.
-$(call inherit-product-if-exists, vendor/pb/config/common.mk)
-
 # Inherit from those products. Most specific first.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/base.mk)
-#$(call inherit-product-if-exists, $(SRC_TARGET_DIR)/product/aosp_base.mk)
-#$(call inherit-product-if-exists, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
-#$(call inherit-product-if-exists, $(SRC_TARGET_DIR)/product/embedded.mk)
-#$(call inherit-product-if-exists, $(SRC_TARGET_DIR)/product/languages_full.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 
 PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,$(DEVICE_PATH)/recovery/root,recovery/root)
 
 # Device identifier. This must come after all inclusions
-PRODUCT_DEVICE := X657C
-PRODUCT_NAME := omni_X657C
-PRODUCT_BRAND := Infinix
-PRODUCT_MODEL := X657C
-PRODUCT_MANUFACTURER := infinix
+PRODUCT_DEVICE := earth
+PRODUCT_NAME := twrp_earth
+PRODUCT_BRAND := Redmi
+PRODUCT_MODEL := Redmi 12C
+PRODUCT_MANUFACTURER := Xiaomi
 
-#PRODUCT_GMS_CLIENTID_BASE := android-infinix
-
-#PRODUCT_BUILD_PROP_OVERRIDES += \
-    #PRIVATE_BUILD_DESC="vnd_x657c_h6117-user 11 RP1A.200720.011 131470 release-keys"
-
-#BUILD_FINGERPRINT := Infinix/X657C-INJO/Infinix-X657C:11/RP1A.200720.011/210716V170:user/release-keys
+PRODUCT_GMS_CLIENTID_BASE := android-$(PRODUCT_MANUFACTURER)
