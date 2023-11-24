@@ -38,6 +38,7 @@ AB_OTA_PARTITIONS += \
     vbmeta_system
 
 # Virtual A/B
+AB_OTA_UPDATER := true
 ENABLE_VIRTUAL_AB := true
 $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
 
