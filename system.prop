@@ -24,6 +24,6 @@ ro.postinstall.fstab.prefix=/system
 # USB
 ro.sys.usb.storage.type=mtp
 
-ro.treble.enabled=true
+#ro.treble.enabled=true
 ro.crypto.metadata.enabled=true
 ro.crypto.support_metadata_encrypt=true
