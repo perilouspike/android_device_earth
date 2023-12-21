@@ -11,11 +11,9 @@ fbe.metadata.wrappedkey=true
 ro.crypto.volume.filenames_mode=aes-256-cts
 
 # Gatekeeper
-ro.hardware.kmsetkey=beanpod
 ro.hardware.gatekeeper=beanpod
 
 # Attachments 
-#persist.sys.binary_xml=false
 ro.boot.product.vendor.sku=earth
 
 # Fstab

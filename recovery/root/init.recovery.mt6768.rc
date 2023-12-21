@@ -28,6 +28,7 @@ on early-fs
 on post-fs
     # Start Logging
     start logcat_daemon
+    start boot-hal-1-2
 
     on property:ro.crypto.state=encrypted && property:ro.crypto.type=file
     install_keyring
@@ -61,11 +62,11 @@ service mtk.plpath.utils.link /system/bin/mtk_plpath_utils
     #disabled
     #seclabel u:r:recovery:s0
 
-#service keystore2 /system/bin/keystore2 /data/misc/keystore
-    #user root
-    #group root drmrpc readproc log
-    #disabled
-    #seclabel u:r:recovery:s0     
+service keystore2 /system/bin/keystore2 /data/misc/keystore
+    user root
+    group root drmrpc readproc log
+    disabled
+    seclabel u:r:recovery:s0     
 
 #service wait_for_keymaster /system/bin/wait_for_keymaster
     #user root
@@ -96,10 +97,13 @@ service vibrator-earth /system/bin/hw/android.hardware.vibrator-service.earth
     disabled
     seclabel u:r:recovery:s0
 
-#on property:hwservicemanager.ready=true
-    #start keystore2
-   # start keymaster-4-1-beanpod
-    #start gatekeeper-1-0
+on property:crypto.ready=1
+    start keymaster-4-1
+
+on property:hwservicemanager.ready=true
+    start keystore2
+    start keymaster-4-1
+    start gatekeeper-1-0
 
 #on property:vendor.sys.listeners.registered=true
     #start keymaster-4-1-beanpod
@@ -115,15 +119,19 @@ on property:ro.crypto.state=unencrypted
     stop keymaster-4-1
     stop gatekeeper-1-0
         
-on property:twrp.all.users.decrypted=true
+on property:twrp.decrypt.done=true
     stop teei_daemon
     stop keymaster-4-1
     stop gatekeeper-1-0
+
+on property:crypto.ready=0
+    stop teei_daemon
+    stop keymaster-4-1
+    stop gatekeeper-1-0  
    
 on boot
     setprop sys.usb.config adb
     start health-hal-2-1
-    start boot-hal-1-2
     start vibrator-rosemary
 
 # Fix flashlight on orangefox
