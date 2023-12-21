@@ -1,22 +1,18 @@
-import /microtrust.rc
+import /init.microtrust.rc
 
-service flashlightd /bin/hw/logcat_daemon
-    user root
-    group root
-    seclabel u:r:init:s0
-    oneshot  # not confident enough to have it auto restart
-    disabled
+#service flashlightd /bin/hw/logcat_daemon
+    #user root
+    #group root
+    #seclabel u:r:init:s0
+    #oneshot  # not confident enough to have it auto restart
+    #disabled
 
 on init
     # Create a more standard /dev/block layout for our scripts
     #mkdir /mnt/vendor/persist 0700 root root
     #mount ext4 /dev/block/platform/bootdevice/by-name/persist /mnt/vendor/persist
     export LD_LIBRARY_PATH /system/lib64:/vendor/lib64:/vendor/lib64/hw:/system/lib64/hw
-    setprop crypto.ready 1
-
-on fs
-    on property:ro.crypto.state=encrypted && property:ro.crypto.type=file
-    install_keyring
+    #setprop crypto.ready 1
 
 # We need vold early for metadata encryption
 on early-fs
@@ -32,6 +28,9 @@ on early-fs
 on post-fs
     # Start Logging
     start logcat_daemon
+
+    on property:ro.crypto.state=encrypted && property:ro.crypto.type=file
+    install_keyring
 
     # Support A/B feature for EMMC and UFS boot region
     symlink /dev/block/sda /dev/block/mmcblk0boot0
@@ -55,25 +54,25 @@ service mtk.plpath.utils.link /system/bin/mtk_plpath_utils
     oneshot
     seclabel u:r:recovery:s0
 
-service keystore_auth /system/bin/keystore_auth
-    oneshot
-    user system
-    group root
-    disabled
-    seclabel u:r:recovery:s0
+#service keystore_auth /system/bin/keystore_auth
+   # oneshot
+    #user system
+    #group root
+    #disabled
+    #seclabel u:r:recovery:s0
 
-service keystore2 /system/bin/keystore2 /data/misc/keystore
-    user root
-    group root drmrpc readproc log
-    disabled
-    seclabel u:r:recovery:s0     
+#service keystore2 /system/bin/keystore2 /data/misc/keystore
+    #user root
+    #group root drmrpc readproc log
+    #disabled
+    #seclabel u:r:recovery:s0     
 
-service wait_for_keymaster /system/bin/wait_for_keymaster
-    user root
-    group root system
-    disabled
-    oneshot
-    seclabel u:r:recovery:s0    
+#service wait_for_keymaster /system/bin/wait_for_keymaster
+    #user root
+   # group root system
+    #disabled
+   # oneshot
+   # seclabel u:r:recovery:s0    
 
 service gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service
     interface android.hardware.gatekeeper@1.0::IGatekeeper default
@@ -82,7 +81,7 @@ service gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service
     disabled
     seclabel u:r:recovery:s0
 
-service keymaster-4-1-beanpod /vendor/bin/hw/android.hardware.keymaster@4.1-service.beanpod
+service keymaster-4-1 /vendor/bin/hw/android.hardware.keymaster@4.1-service.beanpod
     interface android.hardware.keymaster@4.0::IKeymasterDevice default
     interface android.hardware.keymaster@4.1::IKeymasterDevice default
     user root
@@ -97,28 +96,28 @@ service vibrator-earth /system/bin/hw/android.hardware.vibrator-service.earth
     disabled
     seclabel u:r:recovery:s0
 
-on property:hwservicemanager.ready=true
-    start keystore2
-    start keymaster-4-1-beanpod
-    start gatekeeper-1-0
+#on property:hwservicemanager.ready=true
+    #start keystore2
+   # start keymaster-4-1-beanpod
+    #start gatekeeper-1-0
 
-on property:vendor.sys.listeners.registered=true
-    start keymaster-4-1-beanpod
-    start gatekeeper-1-0
+#on property:vendor.sys.listeners.registered=true
+    #start keymaster-4-1-beanpod
+    #start gatekeeper-1-0
    
 on property:ro.crypto.state=unsupported
     stop teei_daemon
-    stop keymaster-4-1-beanpod
+    stop keymaster-4-1
     stop gatekeeper-1-0
     
 on property:ro.crypto.state=unencrypted
     stop teei_daemon
-    stop keymaster-4-1-beanpod
+    stop keymaster-4-1
     stop gatekeeper-1-0
         
 on property:twrp.all.users.decrypted=true
     stop teei_daemon
-    stop keymaster-4-1-beanpod
+    stop keymaster-4-1
     stop gatekeeper-1-0
    
 on boot

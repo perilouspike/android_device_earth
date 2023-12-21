@@ -51,6 +51,12 @@ PRODUCT_PACKAGES += \
 # Dynamic Partitions
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 
+# VNDK
+PRODUCT_TARGET_VNDK_VERSION := 31
+
+# API
+PRODUCT_SHIPPING_API_LEVEL := 30
+
 # fastbootd
 PRODUCT_PACKAGES += \
     android.hardware.fastboot@1.0-impl-mock \
@@ -62,27 +68,27 @@ PRODUCT_PACKAGES += \
     mtk_plpath_utils.recovery
 
 # Keystore
-PRODUCT_PACKAGES += \
+#PRODUCT_PACKAGES += \
     android.system.keystore2    
 
 # Keymint HAL
-PRODUCT_PACKAGES += \
+#PRODUCT_PACKAGES += \
     android.hardware.security.keymint-service \
     android.hardware.security.secureclock \
     android.hardware.security.sharedsecret
 
 # Drm
-PRODUCT_PACKAGES += \
+#PRODUCT_PACKAGES += \
     android.hardware.drm@1.4
 
 # Keymaster
-PRODUCT_PACKAGES += \
+#PRODUCT_PACKAGES += \
     android.hardware.keymaster@4.1 \
     android.hardware.keymaster@4.0 \
     android.hardware.keymaster@3.0
 
 # Additional Libraries
-TARGET_RECOVERY_DEVICE_MODULES += \
+#TARGET_RECOVERY_DEVICE_MODULES += \
     android.hardware.keymaster@4.1 \
     android.hardware.keymaster@4.0 \
     android.hardware.keymaster@3.0 \
@@ -95,7 +101,7 @@ TARGET_RECOVERY_DEVICE_MODULES += \
     vendor.display.config@1.0 \
     vendor.display.config@2.0
 
-RECOVERY_LIBRARY_SOURCE_FILES += \
+#RECOVERY_LIBRARY_SOURCE_FILES += \
     $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster4.so \
     $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster41.so \
     $(TARGET_OUT_SHARED_LIBRARIES)/libpuresoftkeymasterdevice.so \
@@ -108,20 +114,23 @@ RECOVERY_LIBRARY_SOURCE_FILES += \
 
 
 TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
-    $(TARGET_OUT_SHARED_LIBRARIES)/android.hardware.keymaster@4.1.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/android.hardware.keymaster@4.0.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/android.hardware.keymaster@3.0.so \
     $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster4.so \
     $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster41.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libpuresoftkeymasterdevice.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libimsg_log.so
+    $(TARGET_OUT_SHARED_LIBRARIES)/libpuresoftkeymasterdevice.so
+    #$(TARGET_OUT_SHARED_LIBRARIES)/libimsg_log.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/android.hardware.keymaster@4.1.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/android.hardware.keymaster@4.0.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/android.hardware.keymaster@3.0.so
 
 # Health HAL
 PRODUCT_PACKAGES += \
     android.hardware.health@2.1-impl \
-    android.hardware.health@2.1-service \
-    libhealthd.$(PRODUCT_PLATFORM)
+    android.hardware.health@2.1-service
+    #libhealthd.$(PRODUCT_PLATFORM)
 
-PRODUCT_ENFORCE_VINTF_MANIFEST := true
-DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/recovery/root/system/etc/vintf/manifest.xml
-DEVICE_MATRIX_FILE += $(DEVICE_PATH)/recovery/root/system/etc/vintf/compatibility_manifest.xml
+#PRODUCT_ENFORCE_VINTF_MANIFEST := true
+#DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/recovery/root/system/etc/vintf/manifest.xml
+#DEVICE_MATRIX_FILE += $(DEVICE_PATH)/recovery/root/system/etc/vintf/compatibility_manifest.xml
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.vendor.build.security_patch=2099-12-31
