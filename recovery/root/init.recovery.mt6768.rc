@@ -9,8 +9,8 @@ import /init.microtrust.rc
 
 on init
     # Create a more standard /dev/block layout for our scripts
-    #mkdir /mnt/vendor/persist 0700 root root
-    #mount ext4 /dev/block/platform/bootdevice/by-name/persist /mnt/vendor/persist
+    mkdir /mnt/vendor/persist 0700 root root
+    mount ext4 /dev/block/platform/bootdevice/by-name/persist /mnt/vendor/persist
     export LD_LIBRARY_PATH /system/lib64:/vendor/lib64:/vendor/lib64/hw:/system/lib64/hw
     #setprop crypto.ready 1
 
