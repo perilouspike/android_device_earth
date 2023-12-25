@@ -107,8 +107,8 @@ RECOVERY_LIBRARY_SOURCE_FILES += \
     $(TARGET_OUT_SYSTEM_EXT_SHARED_LIBRARIES)/vendor.display.config@1.0.so \
     $(TARGET_OUT_SYSTEM_EXT_SHARED_LIBRARIES)/vendor.display.config@2.0.so
 
-#PRODUCT_ENFORCE_VINTF_MANIFEST := true
-#DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/recovery/root/system/etc/vintf/manifest.xml
+PRODUCT_ENFORCE_VINTF_MANIFEST := true
+DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/recovery/root/system/etc/vintf/manifest.xml
 #DEVICE_MATRIX_FILE += $(DEVICE_PATH)/recovery/root/system/etc/vintf/compatibility_manifest.xml
 
 # VNDK
